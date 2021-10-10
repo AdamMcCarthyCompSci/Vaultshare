@@ -1,0 +1,18 @@
+{
+    "watch": [
+      "package.json",
+      "nodemon.json",
+      ".eslintrc.json",
+      ".babelrc",
+      ".prettierrc",
+      "src/",
+      ".env"
+    ],
+    "verbose": true,
+    "ignore": ["*.test.js", "*.spec.js"],
+    "events": {
+      "restart": "kill-port 3000",
+      "crash": "kill-port 3000"
+    },
+    "delay": "1500"
+}
