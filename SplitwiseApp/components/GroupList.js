@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -12,11 +12,33 @@ export default function GroupList(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
-  const [groups, setGroups] = React.useState([{title: "Oldenburger Str. 9", members: [{name: "Ross"}, {name: "Adam"}, {name: "Tom"}, {name: "Darragh"}, {name: "Ronan"}, {name: "David"}, {name: "Joe"}]}])
+  // const [groups, setGroups] = React.useState([{title: "Oldenburger Str. 9", members: [{name: "Ross"}, {name: "Adam"}, {name: "Tom"}, {name: "Darragh"}, {name: "Ronan"}, {name: "David"}, {name: "Joe"}]}])
+  const [groups, setGroups] = React.useState([{}])
 
   const PlusCircleOutlineIcon = (props) => (
     <Icon {...props} name='plus-circle-outline'/>
   );
+
+  useEffect(() => {
+    (async () => {
+       try {
+         // Change to /split/groups if not localhost
+         const response = await fetch(process.env.BACKEND_URL + '/split/groups', {
+           method: 'GET',
+           headers: {
+               Accept: 'application/json',
+               'Content-Type': 'application/json'
+           },
+       })
+       const content = await response.json()
+       console.log(content.result)
+       setGroups(content.result)
+       return
+       } catch (error) {
+         console.error(error);
+       }
+       })()
+   }, []);
 
   return (
     <Layout style={{flex: 1, flexDirection: 'column'}}>
@@ -33,7 +55,7 @@ export default function GroupList(props) {
         onPress={() => {
         props.navigation.navigate('GroupPage', {group: item.group})
         }}>
-          {item.group.title}
+          {item.group.group_name}
         </Button>}
       />
 

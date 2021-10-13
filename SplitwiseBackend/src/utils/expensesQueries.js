@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS expenses
     group_id integer,
     expense_value integer NOT NULL DEFAULT 0,
     date_paid date NOT NULL DEFAULT CURRENT_DATE,
+    expense_title character varying(200) COLLATE pg_catalog."default" NOT NULL DEFAULT 'EXPENSE',
     CONSTRAINT expenses_pkey PRIMARY KEY (expense_id),
     CONSTRAINT expenses_group_id_fkey FOREIGN KEY (group_id)
         REFERENCES groups (group_id) MATCH SIMPLE

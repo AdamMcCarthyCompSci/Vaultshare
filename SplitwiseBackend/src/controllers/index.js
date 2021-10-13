@@ -2,3 +2,4 @@
 export * from './userController';
 export * from './messages';
 export * from './groups';
+export * from './expenses';

@@ -16,10 +16,10 @@ export default function ExpenseItem(props) {
             <Layout style={{ flex: 5}}>
             <Button
             onPress={() => {
-                props.navigation.navigate('ExpenseDetails', {key: props.index, title: props.title})
+              props.navigation.navigate('ExpenseDetails', {key: props.index, title: props.title})
             }}
             >
-              {props.title}
+              {props.expense.expense.expense_title}
             </Button>
             </Layout>
             <Layout style={{ flex: 2}}/>

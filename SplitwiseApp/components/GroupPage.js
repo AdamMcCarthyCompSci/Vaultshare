@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -15,6 +15,33 @@ export default function GroupPage(props) {
   );
 
   const themeContext = React.useContext(ThemeContext);
+
+    const [expenses, setExpenses] = React.useState([{}])
+
+   useEffect(() => {
+    (async () => {
+       try {
+         // Change to /split/groups if not localhost
+         const response = await fetch(process.env.BACKEND_URL + '/split/expenses', {
+           method: 'POST',
+           headers: {
+               Accept: 'application/json',
+               'Content-Type': 'application/json'
+           },
+               body: JSON.stringify({
+                group_id: props.route.params.group.group_id,
+              }),
+       })
+       const content = await response.json()
+       console.log("RESULT",content.result)
+       setExpenses(content.result)
+       return
+       } catch (error) {
+         console.error(error);
+       }
+       })()
+    }, []
+   );
 
   return (
     <Layout style={{flex: 1, flexDirection: 'column'}}>
@@ -35,13 +62,14 @@ export default function GroupPage(props) {
       </Layout>
 
       <Layout style={{flex: 10}}>
+        <Text>{props.route.params.group.group_id}</Text>
       <FlatList
       data={
-        [...Array(20)].map((index, row) => (
-              {key: row.toString(),
-              title: 'shopping'}
+        expenses.map((expense, index) => (
+              {key: index.toString(),
+              expense: expense}
         ))}
-      renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} title={item.title} navigation={props.navigation}/>}
+      renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} expense={item} navigation={props.navigation}/>}
       />
       </Layout>
       

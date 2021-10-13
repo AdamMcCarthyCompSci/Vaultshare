@@ -35,6 +35,7 @@ app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser(sessionSecret));
+
 app.use('/split', indexRouter);
 
 app.use((err, req, res, next) => {

@@ -15,7 +15,8 @@ export default function AddGroup(props) {
      useEffect(() => {
      (async () => {
         try {
-          const response = await fetch(process.env.BACKEND_URL + 'split/groups', {
+          // Change to /split/groups if not localhost
+          const response = await fetch(process.env.BACKEND_URL + '/split/groups', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

@@ -15,9 +15,10 @@ export default function Login(props) {
 
 
     const loginUser = async () => {
-        console.log("Test")
+        console.log("Test:", process.env.BACKEND_URL)
         try {
-          const response = await fetch(process.env.BACKEND_URL + 'login', {
+            // If local use 'login', if not local and using ngrok to open port 3000 for backend, then use '/login' and change env variable to ngrok URL.
+          const response = await fetch(process.env.BACKEND_URL + '/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
