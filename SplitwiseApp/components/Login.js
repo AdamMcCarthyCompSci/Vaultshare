@@ -47,6 +47,7 @@ export default function Login(props) {
         <Layout style={{flex: 10}}>
                 <Layout style={{flex: 1, flexDirection: 'column'}}>
                     <Layout style={{flex: 3, justifyContent: "center"}} level='1'>
+                        { /* lowercase and trim spaces for email and password. Also do this in registration*/}
                         <Input
                         placeholder='Email'
                         value={email}

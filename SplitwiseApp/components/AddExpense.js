@@ -12,9 +12,9 @@ export default function AddExpense({ navigation, route }) {
     const [expenseTitle, setExpenseTitle] = React.useState('');
     const [expenseValue, setExpenseValue] = React.useState('');
 
-    const memberNames = groupMembers.map(groupMember => groupMember.username)
+    const memberNames = groupMembers.map(groupMember => groupMember.username + ' #' + groupMember.tag)
     const groupedMemberNames = {
-        'Everyone': groupMembers.map(groupMember => groupMember.username)
+        'Everyone': groupMembers.map(groupMember => groupMember.username + ' #' + groupMember.tag)
     }
 
     const [paying, setPaying] = React.useState(new IndexPath(0));
@@ -64,7 +64,31 @@ export default function AddExpense({ navigation, route }) {
     );
 
     const confirmExpense = () => {
-        console.log("GROUP", group, "GROUPMEMBERS", groupMembers, "EXPENSETITLE", expenseTitle, "EXPENSEVALUE", expenseValue, "PAYING", paying.row, "SPLITTING", splitting.row)
+        (async () => {
+            try {
+              // Change to /split/addExpense if not localhost
+              const response = await fetch(process.env.BACKEND_URL + '/split/addExpense', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify({
+                     group: group,
+                     members: groupMembers,
+                     title: expenseTitle,
+                     value: expenseValue,
+                     paying: displayPaying,
+                     splitting: displaySplitting
+                   }),
+            })
+            const content = await response.json()
+            console.log("RESULT",content.result)
+            return
+            } catch (error) {
+              console.error(error);
+            }
+            })()
     }
 
     return (
@@ -95,6 +119,7 @@ export default function AddExpense({ navigation, route }) {
                     <Button accessoryLeft={PaymentIcon}/>
                 </Layout>
                 <Layout style={{flex:6}}>
+                    {/* Check if valid value (1 decimal max)*/}
                     <Input
                     placeholder='Expense Value'
                     value={expenseValue.toString()}

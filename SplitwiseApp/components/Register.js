@@ -146,6 +146,7 @@ export default function Register(props) {
         <Layout style={{flex: 10}}>
                 <Layout style={{flex: 1, flexDirection: 'column'}}>
                     <Layout style={{flex: 2, justifyContent: "center"}} level='1'>
+                        {/* Disable ability to have hashes in username */}
                         <Input
                         label='Username'
                         placeholder='Does not have to be unique'
