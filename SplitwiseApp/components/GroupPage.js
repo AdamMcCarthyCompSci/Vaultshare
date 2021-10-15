@@ -16,13 +16,14 @@ export default function GroupPage(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
-    const [expenses, setExpenses] = React.useState([{}])
+    const [expenses, setExpenses] = React.useState([{}]);
+    const [groupMembers, setGroupMembers] = React.useState([{}]);
 
    useEffect(() => {
     (async () => {
        try {
-         // Change to /split/groups if not localhost
-         const response = await fetch(process.env.BACKEND_URL + '/split/expenses', {
+         // Change to /split/group if not localhost
+         const response = await fetch(process.env.BACKEND_URL + '/split/group', {
            method: 'POST',
            headers: {
                Accept: 'application/json',
@@ -34,7 +35,10 @@ export default function GroupPage(props) {
        })
        const content = await response.json()
        console.log("RESULT",content.result)
-       setExpenses(content.result)
+       console.log("EXPENSES", content.result[0])
+       console.log("GROUPMEMBERS", content.result[1])
+       setExpenses(content.result[0]);
+       setGroupMembers(content.result[1]);
        return
        } catch (error) {
          console.error(error);
@@ -54,7 +58,7 @@ export default function GroupPage(props) {
 
       <Layout style={{flex: 2}}>
       <Button onPress={() => {
-                props.navigation.navigate('AddExpense', {group: props.route.params.group})
+                props.navigation.navigate('AddExpense', {groupMembers: groupMembers, group: props.route.params.group})
       }}
       accessoryLeft={PlusCircleOutlineIcon}>
       Add Expense
