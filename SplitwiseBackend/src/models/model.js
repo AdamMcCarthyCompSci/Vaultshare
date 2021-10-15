@@ -18,9 +18,29 @@ class Model {
           INSERT INTO ${this.table}(${columns})
           VALUES (${values})
           RETURNING ${columns}
-      `;
+      `
     return this.pool.query(query);
   }
+
+  async multipleInsertWithReturn(columns, values) {
+    const query = `
+          INSERT INTO ${this.table}(${columns})
+          VALUES ${values}
+          RETURNING ${columns}
+      `
+    return this.pool.query(query);
+  }
+
+  async insertWithSpecificReturn(columns, values, returning) {
+    const query = `
+          INSERT INTO ${this.table}(${columns})
+          VALUES (${values})
+          RETURNING ${returning}
+      `
+    return this.pool.query(query);
+  }
+
+
 }
 
 export default Model;

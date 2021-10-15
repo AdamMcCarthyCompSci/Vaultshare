@@ -83,7 +83,7 @@ export default function AddExpense({ navigation, route }) {
                    }),
             })
             const content = await response.json()
-            console.log("RESULT",content.result)
+            console.log("RESULT",content)
             return
             } catch (error) {
               console.error(error);
