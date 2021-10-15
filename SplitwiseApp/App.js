@@ -12,7 +12,7 @@ import Settings from "./components/Settings";
 import { StyleSheet, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ApplicationProvider, IconRegistry, Layout, Text } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry, Layout, Text, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { default as defaultTheme } from './SplitwiseTheme.json';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -23,15 +23,27 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [theme, setTheme] = React.useState('light');
 
+  const MoonIcon = (props) => (
+    <Icon {...props} name='moon-outline'/>
+  );
+
+  const SunIcon = (props) => (
+    <Icon {...props} name='sun-outline'/>
+  );
+
+  const [icon, setIcon] = React.useState(MoonIcon);
+
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
+    const nextIcon = theme === 'light' ? SunIcon : MoonIcon;
     setTheme(nextTheme);
+    setIcon(nextIcon);
   };
 
   return (
     <>
     <IconRegistry icons={EvaIconsPack} />
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, icon, toggleTheme }}>
     <ApplicationProvider {...eva} theme={{...eva[theme], ...defaultTheme}}>
     <NavigationContainer>
       <Stack.Navigator>

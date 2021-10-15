@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Text, Icon, Input, Select, IndexPath, SelectItem, Card, Divider, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
+import { Button, Layout, Text, Icon, Input, Select, IndexPath, SelectItem, Card, Divider, Autocomplete, AutocompleteItem, SelectGroup } from '@ui-kitten/components';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,13 +13,19 @@ export default function AddExpense({ navigation, route }) {
     const [expenseValue, setExpenseValue] = React.useState('');
 
     const memberNames = groupMembers.map(groupMember => groupMember.username)
+    const groupedMemberNames = {
+        'Everyone': groupMembers.map(groupMember => groupMember.username)
+    }
 
     const [paying, setPaying] = React.useState(new IndexPath(0));
     const [splitting, setSplitting] = React.useState([
 
     ])
     const displayPaying = memberNames[paying.row];
-    const displaySplitting = memberNames[splitting.row]
+    const displaySplitting = splitting.map(split => {
+        const groupTitle = Object.keys(groupedMemberNames)[split.section];
+        return groupedMemberNames[groupTitle][split.row];
+      });
 
     const ShoppingBagIcon = (props) => (
         <Icon {...props} name='shopping-bag-outline'/>
@@ -48,6 +54,18 @@ export default function AddExpense({ navigation, route }) {
     const PaymentIcon = (props) => (
         <Icon {...props} name='credit-card-outline'/>
     );
+
+    const PersonIcon = (props) => (
+        <Icon {...props} name='person-outline'/>
+    );
+
+    const CheckmarkIcon = (props) => (
+        <Icon {...props} name='checkmark-outline'/>
+    );
+
+    const confirmExpense = () => {
+        console.log("GROUP", group, "GROUPMEMBERS", groupMembers, "EXPENSETITLE", expenseTitle, "EXPENSEVALUE", expenseValue, "PAYING", paying.row, "SPLITTING", splitting.row)
+    }
 
     return (
         <Layout style={{flex: 1, flexDirection: 'column'}}>
@@ -97,7 +115,7 @@ export default function AddExpense({ navigation, route }) {
                     selectedIndex={paying}
                     value={displayPaying}
                     onSelect={index => setPaying(index)}>
-                        {memberNames.map((memberName, index) => <SelectItem key={index} title={memberName}/>)}
+                        {memberNames.map((memberName, index) => <SelectItem key={index} accessoryRight={PersonIcon} title={memberName}/>)}
                 </Select>  
                 </Card>          
             </Layout>
@@ -110,13 +128,18 @@ export default function AddExpense({ navigation, route }) {
                     selectedIndex={splitting}
                     value={displaySplitting}
                     onSelect={index => setSplitting(index)}>
-                        {memberNames.map((memberName, index) => <SelectItem key={index} title={memberName}/>)}
+                        {Object.keys(groupedMemberNames).map((title, index) => 
+                            <SelectGroup key={index} title={title}>
+                                {groupedMemberNames[title].map((memberName, index) => 
+                                    <SelectItem key={index} accessoryRight={PersonIcon} title={memberName}/>)}
+                            </SelectGroup>
+                        )}
                 </Select>   
                 </Card>          
             </Layout>
 
             <Layout style={{flex: 1, justifyContent: 'center'}} level='3'>
-                <Button onPress={() => {console.log(memberNames)}}accessoryLeft={GroupIcon}>{group.group_name}</Button>
+                <Button onPress={() => {confirmExpense()}}accessoryLeft={CheckmarkIcon}>Confirm</Button>
             </Layout>
 
             <Layout style={{flex: 1}} level='4'>

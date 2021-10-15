@@ -53,7 +53,8 @@ export default function GroupPage(props) {
       <Layout style={{flex: 2}}>
       <Button onPress={() => {
                 themeContext.toggleTheme()
-      }}>Toggle Dark Mode</Button>
+      }}
+      accessoryLeft={themeContext.icon}></Button>
       </Layout>
 
       <Layout style={{flex: 2}}>
