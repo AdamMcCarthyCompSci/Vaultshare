@@ -36,7 +36,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser(sessionSecret));
 
-app.use('/split', indexRouter);
+app.use('/split', indexRouter, checkAuthenticated);
 
 app.use((err, req, res, next) => {
     res.status(400).json({ result: err.stack });

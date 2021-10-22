@@ -20,7 +20,7 @@
 
 // module.exports = router;
 import express from 'express';
-import { indexPage, messagesPage, addMessage, groupsPage, groupPage, addExpense, addSplits } from '../controllers';
+import { indexPage, messagesPage, addMessage, groupsPage, groupPage, addExpense, addSplits, checkMember, addFriend, getFriends } from '../controllers';
 import { modifyMessage, performAsyncAction } from '../middleware';
 import { databaseUser } from '../settings';
 const indexRouter = express.Router();
@@ -31,7 +31,9 @@ indexRouter.get('/', indexPage);
 indexRouter.post('/messages', modifyMessage, performAsyncAction, addMessage);
 indexRouter.get('/groups', groupsPage);
 indexRouter.post('/group', groupPage);
-indexRouter.post('/addExpense', addExpense, addSplits)
+indexRouter.post('/addExpense', addExpense, addSplits);
+indexRouter.post('/addFriend', checkMember, addFriend);
+indexRouter.get('/friends', getFriends);
 // indexRouter.get('/login', membersPage);
 
 export default indexRouter;
