@@ -5,7 +5,7 @@ import GroupList from "./components/GroupList";
 import GroupPage from "./components/GroupPage";
 import ExpenseDetails from "./components/ExpenseDetails";
 import AddExpense from "./components/AddExpense";
-import AddFriend from "./components/AddFriend";
+import Friends from "./components/Friends";
 import AddGroup from "./components/AddGroup";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
@@ -74,8 +74,8 @@ export default function App() {
             component={AddExpense}
             />
             <Stack.Screen
-            name="AddFriend"
-            component={AddFriend}
+            name="Friends"
+            component={Friends}
             />
             <Stack.Screen
             name="AddGroup"

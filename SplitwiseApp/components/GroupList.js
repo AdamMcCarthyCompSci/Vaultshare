@@ -19,6 +19,10 @@ export default function GroupList(props) {
     <Icon {...props} name='plus-circle-outline'/>
   );
 
+  const PeopleOutlineIcon = (props) => (
+    <Icon {...props} name='people-outline'/>
+  );
+
   useEffect(() => {
     (async () => {
        try {
@@ -42,6 +46,11 @@ export default function GroupList(props) {
 
   return (
     <Layout style={{flex: 1, flexDirection: 'column'}}>
+            <Button onPress={() => {
+        props.navigation.navigate('Friends')
+      }}
+      accessoryLeft={PeopleOutlineIcon}>
+    </Button>
       <FlatList
       data={
         groups.map((group, index) => (

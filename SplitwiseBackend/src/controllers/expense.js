@@ -4,7 +4,6 @@ const expenseModel = new Model('expenses');
 const splitsModel = new Model('splits')
 
 export const addExpense = async (req, res, next) => {
-  // console.log(req.body);
     const { group, members, title, value, paying, splitting } = req.body
     
     const trimArray = (array) => {
@@ -18,7 +17,7 @@ export const addExpense = async (req, res, next) => {
     
     try {
       const data = await expenseModel.insertWithSpecificReturn(payingColumns, payingValues, 'expense_id');
-      req.body = {expense_id: data.rows[0].expense_id, body: req.body, splitting: trimmedSplitting}
+      req.body = {expense_id: data.rows[0].expense_id, paying_id: payingID.member_id, body: req.body, splitting: trimmedSplitting}
       next();
     } catch (err) {
       res.json({ messages: err.stack });
@@ -26,10 +25,20 @@ export const addExpense = async (req, res, next) => {
   };
 
 export const addSplits = async (req, res) => {
-    const { expense_id, body, splitting } = req.body;
+    const { expense_id, body, splitting, paying_id } = req.body;
     const splittingIDs = splitting.map(split => body.members.find(member => (member.username === split[0] && member.tag.toString() === split[1])))
     const splittingColumns = 'expense_id, member_id, split_value';
-    const splittingValuesArray = splittingIDs.map(member => `(${expense_id}, ${member.member_id}, ${body.value/body.splitting.length})`)
+    const splittingValuesArray = splittingIDs.map(member => {
+      if (member.member_id === paying_id) {
+        return `(${expense_id}, ${member.member_id}, ${-(body.value - (body.value/body.splitting.length))})`
+      }
+      else {
+        return `(${expense_id}, ${member.member_id}, ${body.value/body.splitting.length})`
+      }
+    })
+    if (!splittingIDs.find(member => (member.member_id === paying_id))) {
+      splittingValuesArray.push(`(${expense_id}, ${paying_id}, ${-(body.value) * body.splitting.length})`);
+    }
     const splittingValues = splittingValuesArray.join(', ')
 
     try {

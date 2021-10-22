@@ -21,6 +21,7 @@ export default function ExpenseItem(props) {
             >
               {props.expense.expense.expense_title}
             </Button>
+            <Text>{props.expense.expense.expense_value}</Text>
             </Layout>
             <Layout style={{ flex: 2}}/>
         </Layout>

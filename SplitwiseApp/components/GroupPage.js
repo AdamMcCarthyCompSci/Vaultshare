@@ -67,7 +67,6 @@ export default function GroupPage(props) {
       </Layout>
 
       <Layout style={{flex: 10}}>
-        <Text>{props.route.params.group.group_id}</Text>
       <FlatList
       data={
         expenses.map((expense, index) => (
