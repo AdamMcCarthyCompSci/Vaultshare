@@ -1,29 +1,34 @@
 import React from 'react';
 import ExpenseDetails from "./ExpenseDetails";
-import { StyleSheet, Text, View, FlatList, TextPropTypes } from 'react-native';
+import { StyleSheet, View, FlatList, TextPropTypes } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout } from '@ui-kitten/components';
+import { Button, Layout, ListItem, Icon, Text } from '@ui-kitten/components';
 
 const Stack = createNativeStackNavigator();
 
 export default function ExpenseItem(props) {
+  const { expense } = props.expense;
+
+  const renderItemAccessory = (props) => (
+    <Text>{expense.expense_value}</Text>
+  );
+  const renderItemIcon = (props) => (
+    <Icon {...props} name='person'/>
+  );
+
     return (
         <Layout style={{flex: 1, flexDirection: 'row'}}>
-            <Layout style={{ flex: 1 }}>
+            {/* <Layout style={{ flex: 1 }}/> */}
+            <Layout style={{ flex: 10}}>
+              <ListItem
+                  title={expense.expense_title}
+                  description={`${expense.date_paid} ${expense.expense_value} ${expense.member_id}`}
+                  accessoryLeft={renderItemIcon}
+                  accessoryRight={renderItemAccessory}
+                />
             </Layout>
-            <Layout style={{ flex: 1}}/>
-            <Layout style={{ flex: 5}}>
-            <Button
-            onPress={() => {
-              props.navigation.navigate('ExpenseDetails', {key: props.index, title: props.title})
-            }}
-            >
-              {props.expense.expense.expense_title}
-            </Button>
-            <Text>{props.expense.expense.expense_value}</Text>
-            </Layout>
-            <Layout style={{ flex: 2}}/>
+            {/* <Layout style={{ flex: 1}}/> */}
         </Layout>
     )
 }

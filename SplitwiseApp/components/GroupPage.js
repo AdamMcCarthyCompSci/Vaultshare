@@ -3,7 +3,7 @@ import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon } from '@ui-kitten/components';
+import { Button, Layout, Icon, List, ListItem, Divider } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
 
 const Stack = createNativeStackNavigator();
@@ -34,9 +34,6 @@ export default function GroupPage(props) {
               }),
        })
        const content = await response.json()
-       console.log("RESULT",content.result)
-       console.log("EXPENSES", content.result[0])
-       console.log("GROUPMEMBERS", content.result[1])
        setExpenses(content.result[0]);
        setGroupMembers(content.result[1]);
        return
@@ -67,12 +64,13 @@ export default function GroupPage(props) {
       </Layout>
 
       <Layout style={{flex: 10}}>
-      <FlatList
+      <List
       data={
         expenses.map((expense, index) => (
               {key: index.toString(),
               expense: expense}
         ))}
+        ItemSeparatorComponent={Divider}
       renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} expense={item} navigation={props.navigation}/>}
       />
       </Layout>
