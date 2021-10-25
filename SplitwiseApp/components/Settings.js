@@ -9,7 +9,19 @@ import { ThemeContext } from '../ThemeContext';
 const Stack = createNativeStackNavigator();
 
 export default function Settings(props) {
+
+    const themeContext = React.useContext(ThemeContext);
     return (
-        0
+        <>
+            <Layout style={{flex: 1, flexDirection: 'column'}}>
+        <Text>Settings</Text>
+        <Layout style={{flex: 2}}>
+      <Button onPress={() => {
+                themeContext.toggleTheme()
+      }}
+      accessoryLeft={themeContext.icon}></Button>
+      </Layout>
+      </Layout>
+        </>
     )
 }

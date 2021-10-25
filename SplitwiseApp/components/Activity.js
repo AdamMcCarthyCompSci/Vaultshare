@@ -8,8 +8,11 @@ import { ThemeContext } from '../ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
-export default function Profile(props) {
+export default function Settings(props) {
     return (
-        0
+        <>
+        <Text>Activity</Text>
+        {/* <BottomNavigationTabs navigation={props.navigation}/> */}
+        </>
     )
 }

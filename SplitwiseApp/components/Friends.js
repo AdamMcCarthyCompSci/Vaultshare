@@ -63,6 +63,7 @@ export default function Friends(props) {
   };
 
   return (
+    <>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
       <Layout style={{flex:1}}>
       <Text>Add Friend</Text>
@@ -134,5 +135,7 @@ export default function Friends(props) {
     </Layout>
 
     </Layout>
+    {/* <BottomNavigationTabs navigation={props.navigation}/> */}
+    </>
     )
 }

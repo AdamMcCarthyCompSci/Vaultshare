@@ -1,24 +1,22 @@
 import React from 'react';
 import Register from "./components/Register";
 import Login from "./components/Login";
-import GroupList from "./components/GroupList";
 import GroupPage from "./components/GroupPage";
 import ExpenseDetails from "./components/ExpenseDetails";
 import AddExpense from "./components/AddExpense";
-import Friends from "./components/Friends";
 import AddGroup from "./components/AddGroup";
-import Profile from "./components/Profile";
-import Settings from "./components/Settings";
 import { StyleSheet, View, FlatList } from 'react-native';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer, StackActions, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { ApplicationProvider, IconRegistry, Layout, Text, Icon } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { default as defaultTheme } from './SplitwiseTheme.json';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ThemeContext } from './ThemeContext';
+import { NavigationContext } from './NavigationContext';
+import Home from './components/Home';
 
-const Stack = createNativeStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 export default function App() {
   const [theme, setTheme] = React.useState('light');
@@ -30,7 +28,6 @@ export default function App() {
   const SunIcon = (props) => (
     <Icon {...props} name='sun-outline'/>
   );
-
   const [icon, setIcon] = React.useState(MoonIcon);
 
   const toggleTheme = () => {
@@ -40,58 +37,65 @@ export default function App() {
     setIcon(nextIcon);
   };
 
+  const [tab, setTab] = React.useState(0);
+
+  const changeTab = (props) => {
+    setTab(props);
+  };
+
+  const darkMode = (theme == 'dark' ? DarkTheme : DefaultTheme);
+  const navigationTheme = {
+      ...darkMode,
+    }
+
   return (
     <>
     <IconRegistry icons={EvaIconsPack} />
     <ThemeContext.Provider value={{ theme, icon, toggleTheme }}>
+    <NavigationContext.Provider value={{ tab, changeTab }}>
     <ApplicationProvider {...eva} theme={{...eva[theme], ...defaultTheme}}>
-    <NavigationContainer>
-      <Stack.Navigator>
-            <Stack.Screen
-            name="Register"
-            component={Register}
-            />
-            <Stack.Screen
+    <NavigationContainer theme={navigationTheme}>
+      <Navigator
+        screenOptions={{
+          headerShown: false
+        }}
+            options={{
+              animationEnabled: false,
+            }}>
+            <Screen
             name="Login"
             component={Login}
             />
-            <Stack.Screen
-            name="GroupList"
-            component={GroupList}
+            <Screen
+            name="Register"
+            component={Register}
             />
-            <Stack.Screen
+            <Screen
+            name="Home"
+            component={Home}
+            />
+            <Screen
             name="GroupPage"
             component={GroupPage}
             options={({route}) => ({title: route.params.title})}
             />
-            <Stack.Screen 
+            <Screen 
             name="ExpenseDetails" 
             component={ExpenseDetails} 
             options={({ route }) => ({title: route.params.title})}
             />
-            <Stack.Screen
+            <Screen
             name="AddExpense"
             component={AddExpense}
             />
-            <Stack.Screen
-            name="Friends"
-            component={Friends}
-            />
-            <Stack.Screen
+            <Screen
             name="AddGroup"
             component={AddGroup}
             />
-            <Stack.Screen
-            name="Profile"
-            component={Profile}
-            />
-            <Stack.Screen
-            name="Settings"
-            component={Settings}
-            />
-    </Stack.Navigator>
+    </Navigator>
     </NavigationContainer>
     </ApplicationProvider>
+    </NavigationContext.Provider>
     </ThemeContext.Provider>
     </>
   );

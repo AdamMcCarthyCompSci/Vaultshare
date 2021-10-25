@@ -1,9 +1,10 @@
 import React from 'react';
-import { TouchableWithoutFeedback, FlatList } from 'react-native';
+import { TouchableWithoutFeedback, FlatList, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Layout, Text, Icon, Input, Select, IndexPath, SelectItem, Card, Divider, Autocomplete, AutocompleteItem, CheckBox } from '@ui-kitten/components';
 import { Linking } from 'react-native';
+import Header from './Header';
 // import { BACKEND_URL } from '@env';
 
 const Stack = createNativeStackNavigator();
@@ -142,6 +143,8 @@ export default function Register(props) {
       };
 
     return (
+    <>
+    <Header/>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
         <Layout style={{flex: 10}}>
                 <Layout style={{flex: 1, flexDirection: 'column'}}>
@@ -239,5 +242,6 @@ export default function Register(props) {
                 >Sign in</Button>
         </Layout>
     </Layout>
+    </>
     )
 }

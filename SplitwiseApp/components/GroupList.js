@@ -12,7 +12,6 @@ export default function GroupList(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
-  // const [groups, setGroups] = React.useState([{title: "Oldenburger Str. 9", members: [{name: "Ross"}, {name: "Adam"}, {name: "Tom"}, {name: "Darragh"}, {name: "Ronan"}, {name: "David"}, {name: "Joe"}]}])
   const [groups, setGroups] = React.useState([{}])
 
   const PlusCircleOutlineIcon = (props) => (
@@ -45,6 +44,7 @@ export default function GroupList(props) {
    }, []);
 
   return (
+    <>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
             <Button onPress={() => {
         props.navigation.navigate('Friends')
@@ -74,5 +74,7 @@ export default function GroupList(props) {
       accessoryLeft={PlusCircleOutlineIcon}>
     </Button>
     </Layout>
+    {/* <BottomNavigationTabs navigation={props.navigation}/> */}
+    </>
   );
 }

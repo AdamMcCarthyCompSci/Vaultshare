@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Layout, Text, Icon, Input, Select, IndexPath, SelectItem, Card, Divider, Autocomplete, AutocompleteItem, CheckBox } from '@ui-kitten/components';
 import { Linking } from 'react-native';
+import Header from './Header';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ export default function Login(props) {
         })
         const content = await response.json()
         if (content.result[0]) {
-            props.navigation.replace('GroupList');
+            props.navigation.replace('Home');
         }
         else {
             console.log(content.result[0])
@@ -42,6 +43,8 @@ export default function Login(props) {
       };
 
     return (
+        <>
+        <Header/>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
         <Layout style={{flex: 10}}>
                 <Layout style={{flex: 1, flexDirection: 'column'}}>
@@ -91,5 +94,6 @@ export default function Login(props) {
                 >Register</Button>
         </Layout>
     </Layout>
+    </>
     )
 }

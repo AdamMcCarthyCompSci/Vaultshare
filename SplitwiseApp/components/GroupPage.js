@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react';
 import ExpenseItem from "./ExpenseItem";
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon, List, ListItem, Divider } from '@ui-kitten/components';
+import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction  } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
+import BottomNavigationTabs from './Home';
+import TopNavigationSet from './TopNavigationSet';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,8 +15,6 @@ export default function GroupPage(props) {
   const PlusCircleOutlineIcon = (props) => (
     <Icon {...props} name='plus-circle-outline'/>
   );
-
-  const themeContext = React.useContext(ThemeContext);
 
     const [expenses, setExpenses] = React.useState([{}]);
     const [groupMembers, setGroupMembers] = React.useState([{}]);
@@ -45,14 +45,10 @@ export default function GroupPage(props) {
    );
 
   return (
+    <>
+          <SafeAreaView style={{ flex: 1 }}>
+            <TopNavigationSet back={true} navigation={props.navigation}/>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
-      
-      <Layout style={{flex: 2}}>
-      <Button onPress={() => {
-                themeContext.toggleTheme()
-      }}
-      accessoryLeft={themeContext.icon}></Button>
-      </Layout>
 
       <Layout style={{flex: 2}}>
       <Button onPress={() => {
@@ -78,6 +74,8 @@ export default function GroupPage(props) {
       <Layout style={{flex: 1}}/>
 
     </Layout>
+        </SafeAreaView>
+        </>
   );
 }
 

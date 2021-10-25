@@ -1,8 +1,9 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Layout, Text, Icon, Input, Select, IndexPath, SelectItem, Card, Divider, Autocomplete, AutocompleteItem, SelectGroup } from '@ui-kitten/components';
+import TopNavigationSet from './TopNavigationSet';
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +93,8 @@ export default function AddExpense({ navigation, route }) {
     }
 
     return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <TopNavigationSet back={true} navigation={navigation}/>
         <Layout style={{flex: 1, flexDirection: 'column'}}>
 
             <Layout style={{flex: 1, justifyContent: 'center'}} level='3'>
@@ -186,5 +189,6 @@ export default function AddExpense({ navigation, route }) {
             </Layout>
 
         </Layout>
+        </SafeAreaView>
     )
 }
