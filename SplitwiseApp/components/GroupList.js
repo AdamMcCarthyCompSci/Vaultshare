@@ -3,24 +3,42 @@ import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon } from '@ui-kitten/components';
+import { Button, Layout, Icon, Drawer, DrawerGroup, DrawerItem } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
 
 const Stack = createNativeStackNavigator();
+
+const PeopleIcon = (props) => (
+  <Icon {...props} name='people-outline'/>
+);
+
+const ShoppingBagIcon = (props) => (
+  <Icon {...props} name='shopping-bag-outline'/>
+);
+
+const PersonIcon = (props) => (
+  <Icon {...props} name='person-outline'/>
+);
+
+const BarChartIcon = (props) => (
+  <Icon {...props} name='bar-chart-outline'/>
+);
+
+const PlusCircleIcon = (props) => (
+  <Icon {...props} name='plus-circle-outline'/>
+);
+
+const ForwardIcon = (props) => (
+  <Icon {...props} name='arrow-ios-forward'/>
+);
 
 export default function GroupList(props) {
 
   const themeContext = React.useContext(ThemeContext);
 
+  const [user, setUser] = React.useState({});
   const [groups, setGroups] = React.useState([{}])
-
-  const PlusCircleOutlineIcon = (props) => (
-    <Icon {...props} name='plus-circle-outline'/>
-  );
-
-  const PeopleOutlineIcon = (props) => (
-    <Icon {...props} name='people-outline'/>
-  );
+  const [groupsDrawer, setGroupsDrawer] = React.useState(null);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +53,8 @@ export default function GroupList(props) {
        })
        const content = await response.json()
        console.log(content.result)
-       setGroups(content.result)
+       setUser(content.result[0])
+       setGroups(content.result[1])
        return
        } catch (error) {
          console.error(error);
@@ -46,35 +65,46 @@ export default function GroupList(props) {
   return (
     <>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
-            <Button onPress={() => {
-        props.navigation.navigate('Friends')
-      }}
-      accessoryLeft={PeopleOutlineIcon}>
-    </Button>
-      <FlatList
-      data={
-        groups.map((group, index) => (
-              {key: index.toString(),
-              group: group}
-        ))}
-      renderItem={({item, index}) =>                     
-        <Button
-        key={index}
-        index={index}
-        onPress={() => {
-        props.navigation.navigate('GroupPage', {group: item.group})
-        }}>
-          {item.group.group_name}
-        </Button>}
-      />
-
       <Button onPress={() => {
         props.navigation.navigate('AddGroup')
       }}
-      accessoryLeft={PlusCircleOutlineIcon}>
+      accessoryLeft={PlusCircleIcon}>
     </Button>
+
+      <Drawer
+      selectedIndex={groupsDrawer}
+      onSelect={index => setGroupsDrawer(index)}>
+      {groups.map((group, index) => (
+              <DrawerGroup key={index} title={group.group_name} accessoryLeft={PeopleIcon}>
+              <DrawerItem 
+              title='Add Expense' 
+              accessoryLeft={PlusCircleIcon}
+              accessoryRight={ForwardIcon}
+              onPress={() => {
+                props.navigation.navigate('AddExpense', {group: group})
+              }}/>
+              <DrawerItem 
+              title='Expenses' 
+              accessoryLeft={ShoppingBagIcon}
+              accessoryRight={ForwardIcon}
+              onPress={() => {
+                props.navigation.navigate('Expenses', {group: group, member: user})
+              }}/>
+              <DrawerItem 
+              title='Members' 
+              accessoryLeft={PersonIcon}
+              accessoryRight={ForwardIcon}
+              onPress={() => {
+                props.navigation.navigate('Members', {group: group, member: user})
+              }}/>
+              <DrawerItem 
+              title='Statistics' 
+              accessoryLeft={BarChartIcon}
+              accessoryRight={ForwardIcon}/>
+            </DrawerGroup>
+      ))}
+    </Drawer>
     </Layout>
-    {/* <BottomNavigationTabs navigation={props.navigation}/> */}
     </>
   );
 }

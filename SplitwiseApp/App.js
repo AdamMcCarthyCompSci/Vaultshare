@@ -1,7 +1,8 @@
 import React from 'react';
 import Register from "./components/Register";
 import Login from "./components/Login";
-import GroupPage from "./components/GroupPage";
+import Expenses from "./components/Expenses";
+import Members from "./components/Members";
 import ExpenseDetails from "./components/ExpenseDetails";
 import AddExpense from "./components/AddExpense";
 import AddGroup from "./components/AddGroup";
@@ -75,8 +76,13 @@ export default function App() {
             component={Home}
             />
             <Screen
-            name="GroupPage"
-            component={GroupPage}
+            name="Expenses"
+            component={Expenses}
+            options={({route}) => ({title: route.params.title})}
+            />
+            <Screen
+            name="Members"
+            component={Members}
             options={({route}) => ({title: route.params.title})}
             />
             <Screen 

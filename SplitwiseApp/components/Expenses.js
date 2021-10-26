@@ -3,20 +3,23 @@ import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction  } from '@ui-kitten/components';
+import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
 import BottomNavigationTabs from './Home';
 import TopNavigationSet from './TopNavigationSet';
 
 const Stack = createNativeStackNavigator();
 
-export default function GroupPage(props) {
+export default function Expenses(props) {
+
+  const { group, member } = props.route.params;
 
   const PlusCircleOutlineIcon = (props) => (
     <Icon {...props} name='plus-circle-outline'/>
   );
 
     const [expenses, setExpenses] = React.useState([{}]);
+    const [splits, setSplits] = React.useState([{}]);
     const [groupMembers, setGroupMembers] = React.useState([{}]);
 
    useEffect(() => {
@@ -30,12 +33,15 @@ export default function GroupPage(props) {
                'Content-Type': 'application/json'
            },
                body: JSON.stringify({
-                group_id: props.route.params.group.group_id,
+                group_id: group.group_id,
+                member_id: member.member_id
               }),
        })
        const content = await response.json()
        setExpenses(content.result[0]);
        setGroupMembers(content.result[1]);
+       setSplits(content.result[2])
+       console.log(content.result[2])
        return
        } catch (error) {
          console.error(error);
@@ -49,30 +55,17 @@ export default function GroupPage(props) {
           <SafeAreaView style={{ flex: 1 }}>
             <TopNavigationSet back={true} navigation={props.navigation}/>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
-
-      <Layout style={{flex: 2}}>
-      <Button onPress={() => {
-                props.navigation.navigate('AddExpense', {groupMembers: groupMembers, group: props.route.params.group})
-      }}
-      accessoryLeft={PlusCircleOutlineIcon}>
-      Add Expense
-    </Button>
-      </Layout>
-
-      <Layout style={{flex: 10}}>
+      <Layout style={{flex: 1}}>
       <List
       data={
-        expenses.map((expense, index) => (
+        splits.map((split, index) => (
               {key: index.toString(),
-              expense: expense}
+              split: split}
         ))}
         ItemSeparatorComponent={Divider}
-      renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} expense={item} navigation={props.navigation}/>}
+      renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} split={item} navigation={props.navigation}/>}
       />
       </Layout>
-      
-      <Layout style={{flex: 1}}/>
-
     </Layout>
         </SafeAreaView>
         </>

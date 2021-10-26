@@ -8,7 +8,8 @@ import Friends from './Friends';
 import Activity from './Activity';
 import Settings from './Settings';
 import TopNavigationSet from './TopNavigationSet';
-const PeopleIcon = (props) => (
+
+  const PeopleIcon = (props) => (
     <Icon {...props} name='people-outline'/>
   );
   
@@ -51,25 +52,21 @@ export default function Home(props) {
       <Layout
       style={{height: '100%'}}
         level='2'>
-        <Text category='h5'>Groups</Text>
         <GroupList navigation={props.navigation}/>
       </Layout>
       <Layout
             style={{height: '100%'}}
         level='2'>
-        <Text category='h5'>Friends</Text>
         <Friends navigation={props.navigation}/>
       </Layout>
       <Layout
             style={{height: '100%'}}
         level='2'>
-        <Text category='h5'>Activity</Text>
         <Activity navigation={props.navigation}/>
       </Layout>
       <Layout
             style={{height: '100%'}}
         level='2'>
-        <Text category='h5'>Settings</Text>
         <Settings navigation={props.navigation}/>
       </Layout>
     </ViewPager>

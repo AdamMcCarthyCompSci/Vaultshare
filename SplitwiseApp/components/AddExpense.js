@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,7 +8,34 @@ import TopNavigationSet from './TopNavigationSet';
 const Stack = createNativeStackNavigator();
 
 export default function AddExpense({ navigation, route }) {
-    const { groupMembers, group } = route.params;
+    // const { groupMembers, group } = route.params;
+    const { group } = route.params;
+
+    const [groupMembers, setGroupMembers] = React.useState([{}]);
+
+   useEffect(() => {
+    (async () => {
+       try {
+         // Change to /split/group if not localhost
+         const response = await fetch(process.env.BACKEND_URL + '/split/group', {
+           method: 'POST',
+           headers: {
+               Accept: 'application/json',
+               'Content-Type': 'application/json'
+           },
+               body: JSON.stringify({
+                group_id: group.group_id,
+              }),
+       })
+       const content = await response.json()
+       setGroupMembers(content.result[1]);
+       return
+       } catch (error) {
+         console.error(error);
+       }
+       })()
+    }, []
+   );
 
     const [expenseTitle, setExpenseTitle] = React.useState('');
     const [expenseValue, setExpenseValue] = React.useState('');

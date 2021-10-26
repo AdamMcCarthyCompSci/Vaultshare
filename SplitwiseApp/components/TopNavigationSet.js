@@ -55,7 +55,7 @@ export default function TopNavigationSet(props) {
     return (
       <>
       <Header/>
-      <Layout style={{minHeight: 128}}>
+      {/* <Layout style={{minHeight: 128}}> */}
       <TopNavigation
         alignment='center'
         title='Vaultshare'
@@ -64,7 +64,7 @@ export default function TopNavigationSet(props) {
         accessoryRight={renderRightActions}
       />
       <Divider/>
-      </Layout>
+      {/* </Layout> */}
       </>
     )
 

@@ -8,10 +8,10 @@ import { Button, Layout, ListItem, Icon, Text } from '@ui-kitten/components';
 const Stack = createNativeStackNavigator();
 
 export default function ExpenseItem(props) {
-  const { expense } = props.expense;
+  const { split } = props.split;
 
   const renderItemAccessory = (props) => (
-    <Text>{expense.expense_value}</Text>
+    <Text>{split.split_value}</Text>
   );
   const renderItemIcon = (props) => (
     <Icon {...props} name='person'/>
@@ -22,8 +22,8 @@ export default function ExpenseItem(props) {
             {/* <Layout style={{ flex: 1 }}/> */}
             <Layout style={{ flex: 10}}>
               <ListItem
-                  title={expense.expense_title}
-                  description={`${expense.date_paid} ${expense.expense_value} ${expense.member_id}`}
+                  title={split.expense_title}
+                  description={`${split.date_split} ${split.member_id}`}
                   accessoryLeft={renderItemIcon}
                   accessoryRight={renderItemAccessory}
                 />
