@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ExpenseItem from "./ExpenseItem";
+import ExpenseItem from "./SplitItem";
 import { View } from 'react-native';
 import { Layout } from '@ui-kitten/components';
 

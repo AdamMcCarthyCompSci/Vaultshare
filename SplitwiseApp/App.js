@@ -2,6 +2,7 @@ import React from 'react';
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Expenses from "./components/Expenses";
+import Splits from "./components/Splits";
 import Members from "./components/Members";
 import ExpenseDetails from "./components/ExpenseDetails";
 import AddExpense from "./components/AddExpense";
@@ -78,6 +79,11 @@ export default function App() {
             <Screen
             name="Expenses"
             component={Expenses}
+            options={({route}) => ({title: route.params.title})}
+            />
+            <Screen
+            name="Splits"
+            component={Splits}
             options={({route}) => ({title: route.params.title})}
             />
             <Screen

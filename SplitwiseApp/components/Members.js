@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ExpenseItem from "./ExpenseItem";
+import ExpenseItem from "./SplitItem";
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -26,9 +26,7 @@ const PersonIcon = (props) => (
 
 export default function Expenses(props) {
     
-    const [expenses, setExpenses] = React.useState([{}]);
     const [groupMembers, setGroupMembers] = React.useState([{}]);
-    const [splits, setSplits] = React.useState([{}]);
     const [membersDrawer, setMembersDrawer] = React.useState(null);
 
     const { group, member } = props.route.params;
@@ -37,7 +35,7 @@ export default function Expenses(props) {
      (async () => {
         try {
           // Change to /split/group if not localhost
-          const response = await fetch(process.env.BACKEND_URL + '/split/group', {
+          const response = await fetch(process.env.BACKEND_URL + '/split/groupMembers', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -49,9 +47,7 @@ export default function Expenses(props) {
                }),
         })
         const content = await response.json()
-        setExpenses(content.result[0]);
-        setGroupMembers(content.result[1]);
-        setSplits(content.result[2]);
+        setGroupMembers(content.result);
 
         return
         } catch (error) {
@@ -75,8 +71,7 @@ export default function Expenses(props) {
               accessoryLeft={ArchiveIcon}
               accessoryRight={ForwardIcon}
               onPress={() => {
-                props.navigation.navigate('Expenses', {group: group, member: member})
-                console.log("GROUUUPPP", group);
+                props.navigation.navigate('Splits', {group: group, member: member})
               }}/>
               <DrawerItem 
               title='Remove Member' 

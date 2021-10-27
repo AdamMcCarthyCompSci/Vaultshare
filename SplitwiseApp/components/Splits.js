@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import ExpenseItem from "./ExpenseItem";
+import SplitItem from "./SplitItem";
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction, Drawer, DrawerGroup, DrawerItem } from '@ui-kitten/components';
+import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
 import BottomNavigationTabs from './Home';
 import TopNavigationSet from './TopNavigationSet';
 
 const Stack = createNativeStackNavigator();
 
-export default function Expenses(props) {
+export default function Splits(props) {
 
   const { group, member } = props.route.params;
 
@@ -18,27 +18,13 @@ export default function Expenses(props) {
     <Icon {...props} name='plus-circle-outline'/>
   );
 
-  const CreditCardIcon = (props) => (
-    <Icon {...props} name='credit-card-outline'/>
-  );
-
-  const EditIcon = (props) => (
-    <Icon {...props} name='edit-outline'/>
-  );
-
-  const ForwardIcon = (props) => (
-    <Icon {...props} name='arrow-ios-forward'/>
-  );
     const [splits, setSplits] = React.useState([{}]);
-    const [expenses, setExpenses] = React.useState([{}]);
-    const [groupMembers, setGroupMembers] = React.useState([{}]);
-    const [groupsDrawer, setGroupsDrawer] = React.useState(null);
 
    useEffect(() => {
     (async () => {
        try {
          // Change to /split/group if not localhost
-         const response = await fetch(process.env.BACKEND_URL + '/split/expenses', {
+         const response = await fetch(process.env.BACKEND_URL + '/split/splits', {
            method: 'POST',
            headers: {
                Accept: 'application/json',
@@ -50,10 +36,8 @@ export default function Expenses(props) {
               }),
        })
        const content = await response.json()
-       setExpenses(content.result[0]);
-       setGroupMembers(content.result[1]);
-       setSplits(content.result[2])
-       console.log(content.result[0])
+       setSplits(content.result)
+       console.log(content.result)
        return
        } catch (error) {
          console.error(error);
@@ -70,13 +54,12 @@ export default function Expenses(props) {
       <Layout style={{flex: 1}}>
       <List
       data={
-        expenses.map((expense, index) => (
+        splits.map((split, index) => (
               {key: index.toString(),
-              expense: expense}
+              split: split}
         ))}
         ItemSeparatorComponent={Divider}
-      renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} expense={item} splits={splits} navigation={props.navigation}/>}
-      extraData={splits}
+      renderItem={({item, index}) => <SplitItem style={styles.item} key={index} index={index} split={item} navigation={props.navigation}/>}
       />
       </Layout>
     </Layout>

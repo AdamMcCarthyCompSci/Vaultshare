@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ExpenseItem from "./ExpenseItem";
+import ExpenseItem from "./SplitItem";
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
