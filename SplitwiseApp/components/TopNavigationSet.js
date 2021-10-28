@@ -1,29 +1,29 @@
-import React from 'react';
-import { Icon, Layout, TopNavigation, Divider, TopNavigationAction, MenuItem, OverflowMenu } from '@ui-kitten/components';
-import Header from './Header';
-import { NavigationContainer } from '@react-navigation/native';
+import React from "react";
+import {
+  Icon,
+  Layout,
+  TopNavigation,
+  Divider,
+  TopNavigationAction,
+  MenuItem,
+  OverflowMenu,
+} from "@ui-kitten/components";
+import Header from "./Header";
+import { NavigationContainer } from "@react-navigation/native";
+import { ThemeContext } from "../ThemeContext";
 
-const BackIcon = (props) => (
-  <Icon {...props} name='arrow-back'/>
-);
+const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 
-const EditIcon = (props) => (
-  <Icon {...props} name='edit'/>
-);
+const EditIcon = (props) => <Icon {...props} name="edit" />;
 
-const MenuIcon = (props) => (
-  <Icon {...props} name='more-vertical'/>
-);
+const MenuIcon = (props) => <Icon {...props} name="more-vertical" />;
 
-const InfoIcon = (props) => (
-  <Icon {...props} name='info'/>
-);
+const InfoIcon = (props) => <Icon {...props} name="info" />;
 
-const LogoutIcon = (props) => (
-  <Icon {...props} name='log-out'/>
-);
+const LogoutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export default function TopNavigationSet(props) {
+  const themeContext = React.useContext(ThemeContext);
 
   const [menuVisible, setMenuVisible] = React.useState(false);
 
@@ -32,40 +32,47 @@ export default function TopNavigationSet(props) {
   };
 
   const renderMenuAction = () => (
-    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu}/>
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
   );
 
   const renderRightActions = () => (
     <React.Fragment>
-      <TopNavigationAction icon={EditIcon}/>
+      <TopNavigationAction
+        icon={themeContext.icon}
+        onPress={() => themeContext.toggleTheme()}
+      />
       <OverflowMenu
         anchor={renderMenuAction}
         visible={menuVisible}
-        onBackdropPress={toggleMenu}>
-        <MenuItem accessoryLeft={InfoIcon} title='About'/>
-        <MenuItem accessoryLeft={LogoutIcon} title='Logout'/>
+        onBackdropPress={toggleMenu}
+      >
+        <MenuItem accessoryLeft={InfoIcon} title="About" />
+        <MenuItem accessoryLeft={LogoutIcon} title="Logout" />
       </OverflowMenu>
     </React.Fragment>
   );
 
   const renderBackAction = () => (
-    <TopNavigationAction icon={BackIcon} back={false} onPress={() => props.navigation.goBack()}/>
+    <TopNavigationAction
+      icon={BackIcon}
+      back={false}
+      onPress={() => props.navigation.goBack()}
+    />
   );
 
-    return (
-      <>
-      <Header/>
+  return (
+    <>
+      <Header />
       {/* <Layout style={{minHeight: 128}}> */}
       <TopNavigation
-        alignment='center'
-        title='Vaultshare'
-        subtitle='Expense Splitting App'
+        alignment="center"
+        title="Vaultshare"
+        subtitle="Expense Splitting App"
         accessoryLeft={props.back ? renderBackAction : undefined}
         accessoryRight={renderRightActions}
       />
-      <Divider/>
+      <Divider />
       {/* </Layout> */}
-      </>
-    )
-
+    </>
+  );
 }

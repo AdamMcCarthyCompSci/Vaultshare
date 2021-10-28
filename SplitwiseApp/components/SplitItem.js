@@ -1,48 +1,32 @@
-import React from 'react';
+import React from "react";
 import ExpenseDetails from "./ExpenseDetails";
-import { StyleSheet, View, FlatList, TextPropTypes } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, ListItem, Icon, Text } from '@ui-kitten/components';
+import { StyleSheet, View, FlatList, TextPropTypes } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Button, Layout, ListItem, Icon, Text } from "@ui-kitten/components";
 
 const Stack = createNativeStackNavigator();
 
 export default function SplitItem(props) {
   const { split } = props.split;
 
-  const renderItemAccessory = (props) => (
-    <Text>{split.split_value}</Text>
+  const renderUpIcon = (props) => (
+    <Icon {...props} fill="#88D123" name="trending-up-outline" />
   );
-  const renderItemIcon = (props) => (
-    <Icon {...props} name='person'/>
+  const renderDownIcon = (props) => (
+    <Icon {...props} fill="#FF6614" name="trending-down-outline" />
   );
 
-    return (
-        <Layout style={{flex: 1, flexDirection: 'row'}}>
-            {/* <Layout style={{ flex: 1 }}/> */}
-            <Layout style={{ flex: 10}}>
-              <ListItem
-                  title={split.expense_title}
-                  description={`${split.date_split} ${split.member_id}`}
-                  accessoryLeft={renderItemIcon}
-                  accessoryRight={renderItemAccessory}
-                />
-            </Layout>
-            {/* <Layout style={{ flex: 1}}/> */}
-        </Layout>
-    )
+  return (
+    <Layout style={{ flex: 1, flexDirection: "row" }}>
+      <Layout style={{ flex: 10 }}>
+        <ListItem
+          title={split.expense_title}
+          description={`${split.username} #${split.tag}`}
+          accessoryLeft={split.split_value > 0 ? renderUpIcon : renderDownIcon}
+          accessoryRight={<Text>{split.split_value}</Text>}
+        />
+      </Layout>
+    </Layout>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      // backgroundColor: '#fff',
-      // alignItems: 'center',
-      // justifyContent: 'center',
-    },
-    item: {
-      padding: 10,
-      fontSize: 18,
-      height: 44,
-    }
-  });

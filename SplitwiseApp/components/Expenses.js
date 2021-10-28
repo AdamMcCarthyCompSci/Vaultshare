@@ -3,7 +3,7 @@ import ExpenseItem from "./ExpenseItem";
 import { StyleSheet, Text, View, FlatList, SafeAreaView } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction, Drawer, DrawerGroup, DrawerItem } from '@ui-kitten/components';
+import { Button, Layout, Icon, List, ListItem, TopNavigation, Divider, TopNavigationAction, Drawer, DrawerGroup, DrawerItem, ButtonGroup, Card } from '@ui-kitten/components';
 import { ThemeContext } from '../ThemeContext';
 import BottomNavigationTabs from './Home';
 import TopNavigationSet from './TopNavigationSet';
@@ -68,6 +68,16 @@ export default function Expenses(props) {
             <TopNavigationSet back={true} navigation={props.navigation}/>
     <Layout style={{flex: 1, flexDirection: 'column'}}>
       <Layout style={{flex: 1}}>
+      <Card status='primary' style={{height: "100%"}}>
+      <Button
+      appearance='outline' 
+      accessoryLeft={CreditCardIcon}>
+      Settle up
+    </Button>
+    </Card>
+        </Layout>
+      <Layout style={{flex: 3}}>
+      <Card status='primary' style={{height: "100%"}}>
       <List
       data={
         expenses.map((expense, index) => (
@@ -78,6 +88,7 @@ export default function Expenses(props) {
       renderItem={({item, index}) => <ExpenseItem style={styles.item} key={index} index={index} expense={item} splits={splits} navigation={props.navigation}/>}
       extraData={splits}
       />
+      </Card>
       </Layout>
     </Layout>
         </SafeAreaView>
